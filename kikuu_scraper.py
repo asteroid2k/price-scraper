@@ -9,23 +9,25 @@ from selenium.webdriver.chrome.options import Options
 # Import csv module
 import csv
 import time
+import datetime
 
-chromedriver_path = "./chromedriver.exe"  # path to chromedriver
+
+chromedriver_path = "./chromedriver.exe"
 # Instantiate a headless chrome webdriver so chrome window does not open
 options = webdriver.ChromeOptions()
 options.headless = True
 driver = webdriver.Chrome(chromedriver_path, options=options)
 
-search_input = "Iphone X cases"  # search string
-search_page_limit = 2  # number of pages to be scraped
-csv_filename = "scraped.csv"
+search_input = "Iphone X cases"
+search_page_limit = 1
+csv_filename = f"{search_input}-{datetime.date.today()}.csv"
+csv_filename = csv_filename.replace(' ', '_')
 headers = ["No.", "Name", "Price", "Link"]
 
 with open(csv_filename, mode='w') as file:
     writer = csv.writer(file, delimiter=',',
                         quotechar='"', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(headers)
-
 driver.get('https://www.kikuu.com/')
 
 # find search bar and input search string
@@ -53,6 +55,7 @@ while i <= search_page_limit:
         on_page = pagination.find_element_by_css_selector(".pageItem.active")
         print(f"\nPage {on_page.text}/{pages[-1].text}")
 
+        # go throught each product in search results and extract info
         for p in products[:5]:
             product = p.find_element(By.TAG_NAME, "a")
             p_link = product.get_attribute("href")
@@ -70,7 +73,7 @@ while i <= search_page_limit:
             print(f"->{p_link}")
             j += 1
 
-        # find next page icon and click
+        # find and click on next page icon
         next_page_button = pagination.find_element_by_class_name("nextBox")
         next_page_button = next_page_button.find_element_by_tag_name("i")
         next_page_button.click()
