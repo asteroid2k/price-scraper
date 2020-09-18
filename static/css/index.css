@@ -69,7 +69,7 @@
 }
 
 #spinner {
-  /* visibility: hidden; */
+  visibility: hidden;
   position: absolute;
   left: 50%;
   z-index: 1000;
@@ -77,26 +77,39 @@
 .content {
   position: relative;
   top: 50px;
-  padding: 80px 60px 10px;
-  width: 550px;
-  height: 400px;
+  padding: 50px 60px 10px;
+  width: 600px;
+  height: 420px;
   border-radius: 8px;
-  background-color: snow;
+  background-color: white;
+}
+.intro {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 20px;
+  font-size: 32px;
+}
+label {
+  font-weight: 500;
 }
 
 .butt {
   margin: auto;
   width: 150px;
   height: 60px;
-  border-radius: 5px;
-  background-color: white;
-  border: 1px solid #24292e;
+  border-radius: 2px;
+  background-color: #039be7;
+  border: 0;
   font-size: 22px;
+  letter-spacing: 2px;
+  color: white;
+  font-weight: 700;
 }
 .butt:hover {
-  border-radius: 5px;
-  color: white;
-  background-color: #24292e;
+  color: #039be7;
+  background-color: #c6ecff;
+  border: 3px solid #039be7;
 }
 .form-control:focus {
   border-color: #24292e;

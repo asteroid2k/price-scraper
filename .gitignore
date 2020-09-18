@@ -3,3 +3,4 @@
 /*.html
 *.log
 /static/offline
+/templates/offbase.html

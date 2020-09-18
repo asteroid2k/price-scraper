@@ -23,8 +23,11 @@
     </div>
   </div>
 
-  <div class="container content text-center">
+  <div class="container content">
     <form action="/" method="POST">
+      <div class="intro text-center">
+        <h2 class="intro">Scrape For Prices</h2>
+      </div>
       <div class="form-group">
         <label for="item">Search Item</label>
         <input
@@ -40,7 +43,7 @@
         <div class="form-group col-md-9">
           <label for="site">Website</label>
           <select id="site" class="form-control" name="site">
-            <option selected>Select an Online Shop</option>
+            <option value="none" selected>Select an Online Shop</option>
             {% for site in sites%}
             <option value="{{site}}">{{site}}</option>
             {% endfor %}
@@ -57,7 +60,7 @@
           />
         </div>
       </div>
-      <div class="form-row">
+      <div class="form-row butt-area">
         <button type="submit" class="butt mt-3" onclick="showSpinner()">
           Go
         </button>
