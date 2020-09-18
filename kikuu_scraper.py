@@ -1,5 +1,4 @@
 # Import selenium
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,77 +11,87 @@ import time
 import datetime
 
 
-chromedriver_path = "./chromedriver.exe"
-# Instantiate a headless chrome webdriver so chrome window does not open
-options = webdriver.ChromeOptions()
-options.headless = True
-driver = webdriver.Chrome(chromedriver_path, options=options)
+def scrape(webdriver=None, search_input="", search_page_limit=0):
+    if webdriver is None:
+        return "", True, "No Web Driver"
 
-source = 'https://www.kikuu.com/'
-search_input = "Iphone X cases"
-search_page_limit = 1
-csv_filename = f"{search_input}-{datetime.date.today()}.csv"
-csv_filename = csv_filename.replace(' ', '_')
-headers = ["No.", "Name", "Price", "Link"]
+    source = "https://www.kikuu.com/"
+    error_msg, error = "", False
+    csv_filename = f"{search_input}-{datetime.date.today()}.csv"
+    csv_filename = csv_filename.replace(' ', '_')
+    headers = ["No.", "Name", "Price", "Link"]
 
-with open(csv_filename, mode='w') as file:
-    writer = csv.writer(file, delimiter=',',
-                        quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(headers)
-driver.get(source)
+    with open(csv_filename, mode='w') as file:
+        writer = csv.writer(file, delimiter=',',
+                            quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(headers)
 
-# find search bar and input search string
-searchbar = driver.find_element_by_xpath("//input[@class='search-input']")
-searchbar.send_keys(search_input)
-searchbar.send_keys(Keys.RETURN)
-i, j = 1, 1
-while i <= search_page_limit:
+    webdriver.get(source)
+    # find search bar and input search string
+    searchbar = webdriver.find_element_by_xpath(
+        "//input[@class='search-input']")
+    searchbar.send_keys(search_input)
+    searchbar.send_keys(Keys.RETURN)
+    i, j = 1, 1
+    while i <= search_page_limit:
 
-    try:
-        # raise exception if there are no search results
-        if driver.find_elements_by_class_name("searchEmpty"):
-            print('No Search Results')
-            raise WebDriverException()
+        try:
+            # raise exception if there are no search results
+            if webdriver.find_elements_by_class_name("searchEmpty"):
+                error_msg = "No Search Results"
+                raise WebDriverException
 
-        # wait for search results to load(timeout 10secs)
-        search_list = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "searchGoods")))
-        pagination = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "store-pagination")))
-        pages = pagination.find_elements_by_class_name("pageItem")
+            # wait for search results to load(timeout 10secs)
+            search_list = WebDriverWait(webdriver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "searchGoods")))
+            pagination = WebDriverWait(webdriver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "store-pagination")))
+            pages = pagination.find_elements_by_class_name("pageItem")
 
-        # get list of searched products
-        products = search_list.find_elements_by_tag_name("li")
-        on_page = pagination.find_element_by_css_selector(".pageItem.active")
-        print(f"\nPage {on_page.text}/{pages[-1].text}")
+            # get list of searched products
+            products = search_list.find_elements_by_tag_name("li")
+            on_page = pagination.find_element_by_css_selector(
+                ".pageItem.active")
+            print(f"\nPage {on_page.text}/{pages[-1].text}")
 
-        # go throught each product in search results and extract info
-        for p in products:
-            product = p.find_element(By.TAG_NAME, "a")
-            p_link = product.get_attribute("href")
-            p_content = product.find_element(
-                By.CLASS_NAME,  "searchGoods-content")
-            p_name = p_content.find_element_by_class_name(
-                "searchGoods-name").text
-            p_price = p_content.find_element_by_class_name(
-                "searchGoods-price").text
-            with open(csv_filename, mode='a', encoding='utf-8') as file:
-                csv_writer = csv.writer(
-                    file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                csv_writer.writerow([j, p_name, p_price, p_link])
-            print(f"({j}){p_name[:20]} - {p_price}")
-            print(f"->{p_link}")
-            j += 1
+            # go through each product in search results and extract info
+            for p in products:
+                product = p.find_element(By.TAG_NAME, "a")
+                p_link = product.get_attribute("href")
+                p_content = product.find_element(
+                    By.CLASS_NAME,  "searchGoods-content")
+                p_name = p_content.find_element_by_class_name(
+                    "searchGoods-name").text
+                p_price = p_content.find_element_by_class_name(
+                    "searchGoods-price").text
+                with open(csv_filename, mode='a', encoding='utf-8') as file:
+                    csv_writer = csv.writer(
+                        file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    csv_writer.writerow([j, p_name, p_price, p_link])
+                # print(f"({j}){p_name[:20]} - {p_price}")
+                # print(f"->{p_link}")
+                j += 1
 
-        # find and click on next page icon
-        next_page_button = pagination.find_element_by_class_name("nextBox")
-        next_page_button = next_page_button.find_element_by_tag_name("i")
-        next_page_button.click()
-        time.sleep(2)
-        i += 1
+            # find and click on next page icon
+            next_page_button = pagination.find_element_by_class_name("nextBox")
+            next_page_button = next_page_button.find_element_by_tag_name("i")
+            next_page_button.click()
+            time.sleep(2)
+            i += 1
 
-    except (TimeoutException, WebDriverException) as e:
-        print(e)
-        break
+        except TimeoutException:
+            error = True
+            error_msg = "Timeout error: Check internet connection."
+            break
+        except WebDriverException:
+            error = True
+            break
 
-driver.quit()
+    webdriver.quit()
+    return csv_filename, error, error_msg
+
+
+if __name__ == "__main__":
+    a = input("Search String")
+    b = int(input("Number pages"))
+    scrape(search_input=a, search_page_limit=b)
