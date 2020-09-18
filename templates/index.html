@@ -1,0 +1,69 @@
+{%extends "base.html"%} {% block head %}
+<title>Price Scraper</title>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{url_for('static',filename='css/index.css')}}"
+/>
+<script>
+  function showSpinner() {
+    var spinner = document.getElementById("spinner");
+    spinner.style.visibility = "visible";
+  }
+</script>
+{% endblock %} {% block body %}
+
+<div class="container-fluid body">
+  <div id="spinner">
+    <div class="sk-fold">
+      <div class="sk-fold-cube"></div>
+      <div class="sk-fold-cube"></div>
+      <div class="sk-fold-cube"></div>
+      <div class="sk-fold-cube"></div>
+    </div>
+  </div>
+
+  <div class="container content text-center">
+    <form action="/" method="POST">
+      <div class="form-group">
+        <label for="item">Search Item</label>
+        <input
+          type="text"
+          class="form-control"
+          id="item"
+          name="item"
+          placeholder="eg. Doormat"
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-9">
+          <label for="site">Website</label>
+          <select id="site" class="form-control" name="site">
+            <option selected>Select an Online Shop</option>
+            {% for site in sites%}
+            <option value="{{site}}">{{site}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="page">Page Limit</label>
+          <input
+            type="number"
+            class="form-control"
+            id="page"
+            name="page"
+            value="1"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <button type="submit" class="butt mt-3" onclick="showSpinner()">
+          Go
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

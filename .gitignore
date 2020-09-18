@@ -1,5 +1,5 @@
 .vscode
 *.csv
-*.html
+/*.html
 *.log
 /static/offline
