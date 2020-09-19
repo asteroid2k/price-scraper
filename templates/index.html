@@ -32,24 +32,34 @@
         <label for="item">Search Item</label>
         <input
           type="text"
-          class="form-control"
+          class="form-control {{'is-invalid' if form.item.errors else ''}}"
           id="item"
           name="item"
           placeholder="eg. Doormat"
         />
+        {% if form.item.errors %}
+        <span class="invalid-label text-danger">{{form.item.errors[0]}}</span>
+        {% endif %}
       </div>
 
       <div class="form-row">
-        <div class="form-group col-md-9">
+        <div class="form-group col-md-8">
           <label for="site">Website</label>
-          <select id="site" class="form-control" name="site">
-            <option value="none" selected>Select an Online Shop</option>
+          <select
+            id="site"
+            class="custom-select {{'is-invalid' if form.site.errors else ''}}"
+            name="site"
+          >
+            <option value disabled selected>Select an Online Shop</option>
             {% for site in sites%}
             <option value="{{site}}">{{site}}</option>
             {% endfor %}
           </select>
+          {% if form.site.errors %}
+          <span class="invalid-label text-danger">{{form.site.errors[0]}}</span>
+          {% endif %}
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-4">
           <label for="page">Page Limit</label>
           <input
             type="number"

@@ -1,5 +1,4 @@
 from selenium import webdriver
-
 import jumia_scraper
 import kikuu_scraper
 

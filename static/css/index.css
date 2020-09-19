@@ -1,7 +1,7 @@
 /* Config */
 :root {
   --sk-size: 200px;
-  --sk-color: #24292e;
+  --sk-color: #24292ed0;
 }
 
 .sk-fold {
@@ -79,7 +79,7 @@
   top: 50px;
   padding: 50px 60px 10px;
   width: 600px;
-  height: 420px;
+  height: 460px;
   border-radius: 8px;
   background-color: white;
 }
@@ -111,9 +111,15 @@ label {
   background-color: #c6ecff;
   border: 3px solid #039be7;
 }
-.form-control:focus {
+.form-control:focus,
+.custom-select:focus {
   border-color: #24292e;
   box-shadow: 0 0 0 0.2rem#b8b8b8;
+}
+.invalid-label {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 80%;
 }
 
 .body {
