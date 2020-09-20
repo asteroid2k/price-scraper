@@ -1,9 +1,30 @@
 {%extends "base.html"%} {% block head %} {% endblock %} {% block body %} {% if
-data['error_msg'] %}
-<p>An error occured during the process</p>
-<b>{{data['error_msg']}}</b>
+info %}
+<p>Search results from {{info["site"]}}</p>
+<b>{{data["item"]}}</b>
 
-{% else %}
-<p>Done Scraping</p>
-<p>View results {{data.file}}</p>
-{% endif %} {% endblock %}
+<p>View results {{info["filename"]}}</p>
+
+{% endif %}
+<div class="container-fluid body">
+  <div class="row">
+    <div class="col-md-12 content">
+      <div class="row">
+        <div class="col-md-6 metrics"><b>metrics</b></div>
+        <div class="col-md-6 cheap-list"><b>cheap-list</b></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 price-distribution">
+          <b>price-distribution</b>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 query-form"><b>query-form</b></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 query-list"><b>query-list</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

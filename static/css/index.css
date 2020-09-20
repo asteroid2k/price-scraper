@@ -1,78 +1,93 @@
 /* Config */
-:root {
-  --sk-size: 200px;
-  --sk-color: #24292ed0;
-}
 
-.sk-fold {
+:root {
+  --sk-size: 150px;
+}
+.spinner {
   width: var(--sk-size);
   height: var(--sk-size);
-  position: relative;
-  transform: rotateZ(45deg);
-  top: 100px;
   left: -50%;
-}
-.sk-fold-cube {
-  float: left;
-  width: 50%;
-  height: 50%;
   position: relative;
-  transform: scale(1.1);
+  margin: 100px auto;
 }
 
-.sk-fold-cube:before {
-  content: "";
+.double-bounce1 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #fc5185;
+  opacity: 0.6;
   position: absolute;
   top: 0;
   left: 0;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+.double-bounce2 {
   width: 100%;
   height: 100%;
-  background-color: var(--sk-color);
-  animation: sk-fold 2.4s infinite linear both;
-  transform-origin: 100% 100%;
-}
-.sk-fold-cube:nth-child(2) {
-  transform: scale(1.1) rotateZ(90deg);
-}
-.sk-fold-cube:nth-child(4) {
-  transform: scale(1.1) rotateZ(180deg);
-}
-.sk-fold-cube:nth-child(3) {
-  transform: scale(1.1) rotateZ(270deg);
-}
-.sk-fold-cube:nth-child(2):before {
-  animation-delay: 0.3s;
-}
-.sk-fold-cube:nth-child(4):before {
-  animation-delay: 0.6s;
-}
-.sk-fold-cube:nth-child(3):before {
-  animation-delay: 0.9s;
-}
-
-@keyframes sk-fold {
-  0%,
-  10% {
-    transform: perspective(140px) rotateX(-180deg);
-    opacity: 0;
-  }
-  25%,
-  75% {
-    transform: perspective(140px) rotateX(0deg);
-    opacity: 1;
-  }
-  90%,
-  100% {
-    transform: perspective(140px) rotateY(180deg);
-    opacity: 0;
-  }
-}
-
-#spinner {
-  visibility: hidden;
+  border-radius: 50%;
+  background-color: #574b90;
+  opacity: 0.5;
   position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bounce {
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+
+#t-area {
+  position: absolute;
+  top: 350px;
   left: 50%;
-  z-index: 1000;
+}
+.loading-text-area {
+  position: relative;
+  /* top: 300px; */
+  left: -50%;
+}
+.loading-text {
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: #cccccc;
+}
+.loading-subtext {
+  font-size: 1rem;
+  color: #d1d1d1;
+}
+.spinner-area {
+  position: absolute;
+  top: 20px;
+  left: 50%;
 }
 .content {
   position: relative;
@@ -133,23 +148,73 @@ label {
     #f56476,
     #e43f6f
   );
-  background-size: 200% 200%;
+  background-size: 150% 150%;
   position: relative;
-  animation: bganimate 15s ease-in-out infinite;
+  animation: bganimate 10s ease-in-out infinite;
 }
 
 @keyframes bganimate {
   0% {
     background-position: 0 50%;
   }
-  25% {
-    background-position: 50% 25%;
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.lazy-loading {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+    -45deg,
+    #303a52,
+    #364f6b,
+    #574b90,
+    #9e579d,
+    #fc85ae
+  );
+  position: absolute;
+  z-index: 900;
+  background-size: 120% 120%;
+  animation: loading 2s ease-in-out infinite;
+
+  visibility: hidden;
+}
+@keyframes loading {
+  0% {
+    background-position: 0 50%;
+  }
+  10% {
+    background-position: 20% 50%;
+  }
+  20% {
+    background-position: 40% 50%;
+  }
+  30% {
+    background-position: 60% 50%;
+  }
+  40% {
+    background-position: 80% 50%;
   }
   50% {
     background-position: 100% 50%;
   }
-  75% {
-    background-position: 50% 75%;
+  60% {
+    background-position: 80% 50%;
+  }
+  70% {
+    background-position: 60% 50%;
+  }
+  80% {
+    background-position: 40% 50%;
+  }
+  90% {
+    background-position: 20% 50%;
   }
 
   100% {

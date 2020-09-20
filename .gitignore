@@ -4,3 +4,4 @@
 *.log
 /static/offline
 /templates/offbase.html
+test.py

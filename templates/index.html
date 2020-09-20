@@ -1,30 +1,41 @@
 {%extends "base.html"%} {% block head %}
 <title>Price Scraper</title>
+
 <link
   rel="stylesheet"
   type="text/css"
   href="{{url_for('static',filename='css/index.css')}}"
 />
-<script>
-  function showSpinner() {
-    var spinner = document.getElementById("spinner");
-    spinner.style.visibility = "visible";
-  }
-</script>
-{% endblock %} {% block body %}
 
-<div class="container-fluid body">
-  <div id="spinner">
-    <div class="sk-fold">
-      <div class="sk-fold-cube"></div>
-      <div class="sk-fold-cube"></div>
-      <div class="sk-fold-cube"></div>
-      <div class="sk-fold-cube"></div>
+{% endblock %} {% block body %} {% with messages =
+get_flashed_messages(with_categories=true) %} {% if messages %} {% for category,
+message in messages %}
+<sl-alert type="{{category}}" open closable class="alert-closable">
+  <sl-icon slot="icon" name="info-circle"></sl-icon>
+  {{message}}
+</sl-alert>
+{% endfor %} {% endif %} {% endwith %}
+<div class="lazy-loading" id="lazy-loading">
+  <div class="spinner-area">
+    <div class="spinner" id="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
     </div>
   </div>
-
+  <div id="t-area">
+    <div class="loading-text-area text-center">
+      <p class="loading-text">Might take a while</p>
+      <p class="loading-subtext">
+        Might take a while depending on number of pages and internet connection
+        speed
+      </p>
+    </div>
+  </div>
+</div>
+<div class="container-fluid body">
   <div class="container content">
-    <form action="/" method="POST">
+    <form action="#" method="POST">
+      {{ form.csrf_token }}
       <div class="intro text-center">
         <h2 class="intro">Scrape For Prices</h2>
       </div>
@@ -39,11 +50,12 @@
         />
         {% if form.item.errors %}
         <span class="invalid-label text-danger">{{form.item.errors[0]}}</span>
+
         {% endif %}
       </div>
 
       <div class="form-row">
-        <div class="form-group col-md-8">
+        <div class="form-group col-md-7">
           <label for="site">Website</label>
           <select
             id="site"
@@ -59,7 +71,8 @@
           <span class="invalid-label text-danger">{{form.site.errors[0]}}</span>
           {% endif %}
         </div>
-        <div class="form-group col-md-4">
+        <div class="col-md-2"></div>
+        <div class="form-group col-md-3">
           <label for="page">Page Limit</label>
           <input
             type="number"
@@ -68,15 +81,23 @@
             name="page"
             value="1"
           />
+          {% if form.page.errors %}
+          <span class="invalid-label text-danger">{{form.page.errors[0]}}</span>
+          {% endif %}
         </div>
       </div>
-      <div class="form-row butt-area">
-        <button type="submit" class="butt mt-3" onclick="showSpinner()">
+      <div class="form-row butt-area mt-2">
+        <button type="submit" class="butt mt-3" onclick="showLoadingSceen()">
           Go
         </button>
       </div>
     </form>
   </div>
 </div>
-
+<script>
+  function showLoadingSceen() {
+    var spinner = document.getElementById("lazy-loading");
+    spinner.style.visibility = "visible";
+  }
+</script>
 {% endblock %}

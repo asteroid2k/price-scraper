@@ -12,6 +12,7 @@ import datetime
 
 
 def scrape(webdriver=None, search_input="", search_page_limit=0):
+
     if webdriver is None:
         return "", True, "No Web Driver"
 
@@ -19,7 +20,7 @@ def scrape(webdriver=None, search_input="", search_page_limit=0):
     source = 'https://www.jumia.com.gh/'
     csv_filename = f"{search_input}{datetime.date.today()}.csv"
     csv_filename = csv_filename.replace(' ', '_')
-    headers = ["No", "Name", "Price", "Link"]
+    headers = ["Name", "Price", "Link"]
 
     with open(csv_filename, mode='w') as file:
         writer = csv.writer(file, delimiter=',',
@@ -32,7 +33,7 @@ def scrape(webdriver=None, search_input="", search_page_limit=0):
     searchbar.send_keys(search_input)
     searchbar.send_keys(Keys.RETURN)
 
-    i, j = 1, 1
+    i = 1
     while i <= search_page_limit:
 
         try:
@@ -71,10 +72,9 @@ def scrape(webdriver=None, search_input="", search_page_limit=0):
                     with open(csv_filename, mode='a', encoding='utf-8') as file:
                         csv_writer = csv.writer(
                             file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                        csv_writer.writerow([j, p_name, p_price, p_link])
+                        csv_writer.writerow([p_name, p_price, p_link])
                     # print(f"({j}){p_name[:20]} - {p_price}")
                     # print(f"->{p_link}")
-                    j += 1
                 except StaleElementReferenceException:
                     continue
 
