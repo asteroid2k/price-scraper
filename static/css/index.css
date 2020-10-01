@@ -1,5 +1,3 @@
-/* Config */
-
 :root {
   --sk-size: 150px;
 }
@@ -64,6 +62,11 @@
     -webkit-transform: scale(1);
   }
 }
+.alert-area {
+  width: 50%;
+  margin: auto;
+  position: relative;
+}
 
 #t-area {
   position: absolute;
@@ -72,7 +75,6 @@
 }
 .loading-text-area {
   position: relative;
-  /* top: 300px; */
   left: -50%;
 }
 .loading-text {
@@ -94,7 +96,7 @@
   top: 50px;
   padding: 50px 60px 10px;
   width: 600px;
-  height: 460px;
+  /* height: 460px; */
   border-radius: 8px;
   background-color: white;
 }
@@ -135,6 +137,8 @@ label {
   font-family: "Segoe UI", sans-serif;
   font-weight: 400;
   font-size: 80%;
+  margin: 0;
+  padding: 0;
 }
 
 .body {

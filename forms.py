@@ -13,5 +13,5 @@ class ScrapeForm(FlaskForm):
 
 class DataframeForm(FlaskForm):
     operator = SelectField(choices=["gte", "lte", "gt", "lt", "eq"])
-    value = FloatField(
+    value = IntegerField(
         validators=[DataRequired(message="Provide a value")])

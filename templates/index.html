@@ -7,14 +7,8 @@
   href="{{url_for('static',filename='css/index.css')}}"
 />
 
-{% endblock %} {% block body %} {% with messages =
-get_flashed_messages(with_categories=true) %} {% if messages %} {% for category,
-message in messages %}
-<sl-alert type="{{category}}" open closable class="alert-closable">
-  <sl-icon slot="icon" name="info-circle"></sl-icon>
-  {{message}}
-</sl-alert>
-{% endfor %} {% endif %} {% endwith %}
+{% endblock %} {% block body %}
+<!-- LOADING SCREEN hidden -->
 <div class="lazy-loading" id="lazy-loading">
   <div class="spinner-area">
     <div class="spinner" id="spinner">
@@ -32,8 +26,26 @@ message in messages %}
     </div>
   </div>
 </div>
+<!-- END LOADING SCREEN -->
 <div class="container-fluid body">
-  <div class="container content">
+  <!-- ERROR ALERT -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+
+  <div class="alert-area">
+    <sl-alert
+      type="{{ category | splitstr(0, '_') }}"
+      open
+      closable
+      class="alert-closable"
+    >
+      <sl-icon slot="icon" name="{{ category | splitstr(1, '_') }}"></sl-icon>
+      {{message}}
+    </sl-alert>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+  <!-- END ALERT -->
+  <div class="card container content">
     <form action="#" method="POST">
       {{ form.csrf_token }}
       <div class="intro text-center">
@@ -50,7 +62,6 @@ message in messages %}
         />
         {% if form.item.errors %}
         <span class="invalid-label text-danger">{{form.item.errors[0]}}</span>
-
         {% endif %}
       </div>
 
@@ -80,14 +91,19 @@ message in messages %}
             id="page"
             name="page"
             value="1"
+            min="1"
           />
           {% if form.page.errors %}
           <span class="invalid-label text-danger">{{form.page.errors[0]}}</span>
           {% endif %}
         </div>
       </div>
-      <div class="form-row butt-area mt-2">
-        <button type="submit" class="butt mt-3" onclick="showLoadingSceen()">
+      <div class="form-row butt-area">
+        <button
+          type="submit"
+          class="butt mt-3 mb-3"
+          onclick="showLoadingSceen()"
+        >
           Go
         </button>
       </div>

@@ -8,7 +8,6 @@ from selenium.webdriver.chrome.options import Options
 # Import csv module
 import csv
 import time
-import datetime
 
 
 def scrape(webdriver=None, search_input="", search_page_limit=0):
@@ -18,8 +17,7 @@ def scrape(webdriver=None, search_input="", search_page_limit=0):
 
     error_msg, error = "", False
     source = 'https://www.jumia.com.gh/'
-    csv_filename = f"{search_input}{datetime.date.today()}.csv"
-    csv_filename = csv_filename.replace(' ', '_')
+    csv_filename = f"{search_input}-jumia.csv"
     headers = ["Name", "Price", "Link"]
 
     with open(csv_filename, mode='w') as file:
@@ -97,6 +95,5 @@ def scrape(webdriver=None, search_input="", search_page_limit=0):
 
 
 if __name__ == "__main__":
-    a = input("Search String")
-    b = int(input("Number pages"))
-    scrape(search_input=a, search_page_limit=b)
+
+    scrape(search_input="asdf", search_page_limit=1)

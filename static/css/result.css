@@ -1,0 +1,40 @@
+.my-custom-scrollbar {
+  position: relative;
+  height: 400px;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+.no-data-texth {
+  font-size: 10rem;
+}
+.no-data-text {
+  font-size: 1.5rem;
+}
+.form-control:focus,
+.custom-select:focus {
+  border-color: #24292e;
+  box-shadow: 0 0 0 0.2rem#b8b8b8;
+}
+
+label {
+  font-weight: 500;
+}
+.table thead {
+  background-color: #24292e;
+  color: white;
+}
+.invalid-label {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 75%;
+  margin: 0;
+  padding: 5px;
+}
+.alert-area {
+  width: 50%;
+  margin: auto;
+  position: relative;
+}

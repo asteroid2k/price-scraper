@@ -1,30 +1,145 @@
-{%extends "base.html"%} {% block head %} {% endblock %} {% block body %} {% if
-info %}
-<p>Search results from {{info["site"]}}</p>
-<b>{{data["item"]}}</b>
+{%extends "base.html"%} {% block head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{url_for('static',filename='css/result.css')}}"
+/>{% endblock %} {% block body %}
 
-<p>View results {{info["filename"]}}</p>
-
-{% endif %}
+<!-- MAIN BODY -->
 <div class="container-fluid body">
-  <div class="row">
+  <!-- ALERT -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+
+  <div class="alert-area">
+    <sl-alert
+      type="{{ category | splitstr(0, '_') }}"
+      open
+      closable
+      class="alert-closable"
+    >
+      <sl-icon slot="icon" name="{{ category | splitstr(1, '_') }}"></sl-icon>
+      {{message}}
+    </sl-alert>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+  <!-- END ALERT -->
+  <!-- DASHBOARD (if theres data) -->
+  {% if not error %}
+  <div class="row mt-3 mb-5">
     <div class="col-md-12 content">
-      <div class="row">
-        <div class="col-md-6 metrics"><b>metrics</b></div>
-        <div class="col-md-6 cheap-list"><b>cheap-list</b></div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 price-distribution">
-          <b>price-distribution</b>
+      <div class="row mt-3">
+        <div class="col-md-6 metrics">
+          <div class="card" style="width: 20rem">
+            <div class="card-body">
+              <h5 class="card-title">Metrics</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Summary</h6>
+              <p class="card-text"><b>Min</b>{{info["min"]}}</p>
+              <p class="card-text"><b>Max</b>{{info["max"]}}</p>
+              <p class="card-text"><b>Average</b>{{info["avg"]}}</p>
+              <a href="#" class="card-link">Go to Cheapest</a>
+              <a href="#" class="card-link">Go to Expensive</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 cheap-list">
+          <div class="card" style="width: 20rem">
+            <div class="card-body">
+              <h5 class="card-title">All Done!</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                {{info["item"]}} from {{info["site"]}}
+              </h6>
+              <p class="card-text">View file at {{info["filename"]}}</p>
+              <a href="#" class="card-link">Card link</a>
+              <a href="#" class="card-link">Another link</a>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12 query-form"><b>query-form</b></div>
+      <div class="row mt-3">
+        <!-- CHART -->
+        <div class="col-md-12 price-distribution">
+          <div class="container card" style="width: 80%">
+            <div class="card-body">
+              <h5 class="card-title">Metrics</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+              <p class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+              <a href="#" class="card-link">Card link</a>
+              <a href="#" class="card-link">Another link</a>
+            </div>
+          </div>
+        </div>
+        <!-- ENDCHART -->
       </div>
+      <div class="row mt-5 p-3">
+        <!-- QUERY FORM         -->
+        <div class="col-md-12 query-form">
+          <form class="form-inline" action="/result" method="POST">
+            {{ form.csrf_token }}
+            <label class="mr-2" for="operator">Filter By:</label>
+            <select
+              class="custom-select  {{'is-invalid' if form.operator.errors else ''}}"
+              id="operator"
+              name="operator"
+            >
+              <option selected disabled>Choose a filter</option>
+              <option value="eq">Equals (=)</option>
+              <option value="gte">At least (&ge;)</option>
+              <option value="lte">At most (&le;)</option>
+            </select>
+            {% if form.operator.errors %}
+            <span class="invalid-label text-danger"
+              >{{form.operator.errors[0]}}</span
+            >
+            {% endif %}
+
+            <label class="ml-5 mr-2" for="value">Price</label>
+            <input
+              name="value"
+              type="number"
+              min="1"
+              class="form-control {{'is-invalid' if form.value.errors else ''}}"
+              id="value"
+              placeholder="eg. 100"
+              style="width: 130px"
+            />
+            {% if form.value.errors %}
+            <span class="invalid-label text-danger"
+              >{{form.value.errors[0]}}</span
+            >
+            {% endif %}
+
+            <button type="submit" class="btn btn-secondary ml-5">
+              Apply Filter
+            </button>
+          </form>
+          <!-- END QUERY FORM             -->
+        </div>
+      </div>
+      <!-- QUERY LIST -->
       <div class="row">
-        <div class="col-md-12 query-list"><b>query-list</b></div>
+        <div class="col-md-12 query-list pt-3 pb-3">
+          <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            {{df|safe}}
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  {% else %}
+  <!-- NO DATA -->
+  <div class="no-data text-center mt-5">
+    <h2 class="no-data-texth">(>_<)</h2>
+    <p class="no-data-text">NO DATA</p>
+  </div>
+  {% endif %}
 </div>
+<script>
+  // if (document.getElementsByTagName("table")) {
+  //   let table = document.getElementsByTagName("table");
+  // }
+</script>
 {% endblock %}
