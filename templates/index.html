@@ -1,11 +1,7 @@
 {%extends "base.html"%} {% block head %}
-<title>Price Scraper</title>
+<title>Price Scraper - Find the best product</title>
 
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{{url_for('static',filename='css/index.css')}}"
-/>
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='/css/index.css')}}" />
 
 {% endblock %} {% block body %}
 <!-- LOADING SCREEN hidden -->
@@ -18,7 +14,7 @@
   </div>
   <div id="t-area">
     <div class="loading-text-area text-center">
-      <p class="loading-text">Might take a while</p>
+      <p class="loading-text">Scraping for Prices...</p>
       <p class="loading-subtext">
         Might take a while depending on number of pages and internet connection
         speed
@@ -28,88 +24,46 @@
 </div>
 <!-- END LOADING SCREEN -->
 <div class="container-fluid body">
-  <!-- ERROR ALERT -->
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %}
-
-  <div class="alert-area">
-    <sl-alert
-      type="{{ category | splitstr(0, '_') }}"
-      open
-      closable
-      class="alert-closable"
-    >
-      <sl-icon slot="icon" name="{{ category | splitstr(1, '_') }}"></sl-icon>
-      {{message}}
-    </sl-alert>
-  </div>
-  {% endfor %} {% endif %} {% endwith %}
-  <!-- END ALERT -->
-  <div class="card container content">
-    <form action="#" method="POST">
-      {{ form.csrf_token }}
-      <div class="intro text-center">
-        <h2 class="intro">Scrape For Prices</h2>
-      </div>
-      <div class="form-group">
-        <label for="item">Search Item</label>
-        <input
-          type="text"
-          class="form-control {{'is-invalid' if form.item.errors else ''}}"
-          id="item"
-          name="item"
-          placeholder="eg. Doormat"
-        />
-        {% if form.item.errors %}
-        <span class="invalid-label text-danger">{{form.item.errors[0]}}</span>
-        {% endif %}
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-md-7">
-          <label for="site">Website</label>
-          <select
-            id="site"
-            class="custom-select {{'is-invalid' if form.site.errors else ''}}"
-            name="site"
-          >
-            <option value disabled selected>Select an Online Shop</option>
-            {% for site in sites%}
-            <option value="{{site}}">{{site}}</option>
-            {% endfor %}
-          </select>
-          {% if form.site.errors %}
-          <span class="invalid-label text-danger">{{form.site.errors[0]}}</span>
-          {% endif %}
+  <div class="card form-card">
+    <div class=" card-body">
+      <h1 class="header mb-5">Scrape for Prices</h1>
+      <form action="#" method="POST">
+        {{ form.csrf_token }}
+        <div class="form-floating mb-5">
+          <input name="item" type="text" class="form-control {{'is-invalid' if form.item.errors else ''}}" id="item"
+            placeholder="eg.Hello Kitty keyring" required>
+          <span class="invalid-feedback">{{form.item.errors[0]}}</span>
+          <label for="item">Product</label>
         </div>
-        <div class="col-md-2"></div>
-        <div class="form-group col-md-3">
-          <label for="page">Page Limit</label>
-          <input
-            type="number"
-            class="form-control"
-            id="page"
-            name="page"
-            value="1"
-            min="1"
-          />
-          {% if form.page.errors %}
-          <span class="invalid-label text-danger">{{form.page.errors[0]}}</span>
-          {% endif %}
+        <div class="settings mb-5">
+          <div class="form-floating">
+            <select name="site" class="form-select {{'is-invalid' if form.site.errors else ''}}" id="site"
+              aria-label="Floating label select site" required>
+              {% for site in sites%}
+              <option style="text-transform: capitalize;" value="{{site}}">{{site}}</option>
+              {% endfor %}
+            </select>
+            <span class="invalid-feedback">{{form.site.errors[0]}}</span>
+            <label for="site">Select Shop</label>
+          </div>
+          <div class="form-floating">
+            <input name="page" type="number" class="form-control {{'is-invalid' if form.page.errors else ''}}" id="page"
+              value="1" min="1" placeholder="1" required>
+            <span class="invalid-feedback">{{form.page.errors[0]}}</span>
+            <label for="page">Pages</label>
+          </div>
         </div>
-      </div>
-      <div class="form-row butt-area">
-        <button
-          type="submit"
-          class="butt mt-3 mb-3"
-          onclick="showLoadingSceen()"
-        >
-          Go
-        </button>
-      </div>
-    </form>
+        <div class="text-center">
+          <button type="submit" class="butt" onclick="showLoadingSceen()">GO</button>
+        </div>
+      </form>
+    </div>
   </div>
+
+
 </div>
+
+
 <script>
   function showLoadingSceen() {
     var spinner = document.getElementById("lazy-loading");

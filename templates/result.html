@@ -1,145 +1,145 @@
 {%extends "base.html"%} {% block head %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{{url_for('static',filename='css/result.css')}}"
-/>{% endblock %} {% block body %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='/css/result.css')}}" />{% endblock %} {% block
+body %}
 
 <!-- MAIN BODY -->
-<div class="container-fluid body">
-  <!-- ALERT -->
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %}
+<div class="container result">
 
-  <div class="alert-area">
-    <sl-alert
-      type="{{ category | splitstr(0, '_') }}"
-      open
-      closable
-      class="alert-closable"
-    >
-      <sl-icon slot="icon" name="{{ category | splitstr(1, '_') }}"></sl-icon>
-      {{message}}
-    </sl-alert>
-  </div>
-  {% endfor %} {% endif %} {% endwith %}
-  <!-- END ALERT -->
   <!-- DASHBOARD (if theres data) -->
   {% if not error %}
-  <div class="row mt-3 mb-5">
-    <div class="col-md-12 content">
-      <div class="row mt-3">
-        <div class="col-md-6 metrics">
-          <div class="card" style="width: 20rem">
-            <div class="card-body">
-              <h5 class="card-title">Metrics</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Summary</h6>
-              <p class="card-text"><b>Min</b>{{info["min"]}}</p>
-              <p class="card-text"><b>Max</b>{{info["max"]}}</p>
-              <p class="card-text"><b>Average</b>{{info["avg"]}}</p>
-              <a href="#" class="card-link">Go to Cheapest</a>
-              <a href="#" class="card-link">Go to Expensive</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 cheap-list">
-          <div class="card" style="width: 20rem">
-            <div class="card-body">
-              <h5 class="card-title">All Done!</h5>
-              <h6 class="card-subtitle mb-2 text-muted">
-                {{info["item"]}} from {{info["site"]}}
-              </h6>
-              <p class="card-text">View file at {{info["filename"]}}</p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <!-- CHART -->
-        <div class="col-md-12 price-distribution">
-          <div class="container card" style="width: 80%">
-            <div class="card-body">
-              <h5 class="card-title">Metrics</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <!-- ENDCHART -->
-      </div>
-      <div class="row mt-5 p-3">
-        <!-- QUERY FORM         -->
-        <div class="col-md-12 query-form">
-          <form class="form-inline" action="/result" method="POST">
-            {{ form.csrf_token }}
-            <label class="mr-2" for="operator">Filter By:</label>
-            <select
-              class="custom-select  {{'is-invalid' if form.operator.errors else ''}}"
-              id="operator"
-              name="operator"
-            >
-              <option selected disabled>Choose a filter</option>
-              <option value="eq">Equals (=)</option>
-              <option value="gte">At least (&ge;)</option>
-              <option value="lte">At most (&le;)</option>
-            </select>
-            {% if form.operator.errors %}
-            <span class="invalid-label text-danger"
-              >{{form.operator.errors[0]}}</span
-            >
-            {% endif %}
+  <div class="info">
+    <div class="data mb-5">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Summary</h5>
+          <h6 class="card-subtitle text-muted">Data for &quot;{{info["item"]}}&quot;</h6>
+          <p class="card-text"><span>Total Items Found</span> <i data-feather="chevron-right" width="18"></i>
+            {{info["total"]}}</p>
+          <p class="card-text"><span>Lowest Price</i></span> <i data-feather="chevron-right" width="18"></i>
+            <small>{{info["currency"]}}</small> {{info["low"]}}
+          </p>
+          <p class="card-text"><span>Highest Price</span> <i data-feather="chevron-right" width="18"></i>
+            <small>{{info["currency"]}}</small> {{info["high"]}}
+          </p>
+          <p class="card-text"><span>Average</span> <i data-feather="chevron-right" width="18"></i>
+            <small>{{info["currency"]}}</small> {{info["avg"]}}
+          </p>
 
-            <label class="ml-5 mr-2" for="value">Price</label>
-            <input
-              name="value"
-              type="number"
-              min="1"
-              class="form-control {{'is-invalid' if form.value.errors else ''}}"
-              id="value"
-              placeholder="eg. 100"
-              style="width: 130px"
-            />
-            {% if form.value.errors %}
-            <span class="invalid-label text-danger"
-              >{{form.value.errors[0]}}</span
-            >
-            {% endif %}
 
-            <button type="submit" class="btn btn-secondary ml-5">
-              Apply Filter
-            </button>
-          </form>
-          <!-- END QUERY FORM             -->
         </div>
       </div>
-      <!-- QUERY LIST -->
-      <div class="row">
-        <div class="col-md-12 query-list pt-3 pb-3">
-          <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            {{df|safe}}
-          </div>
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Products</h5>
+          <h6 class="card-subtitle text-muted">Results from {{info["site"]}}</h6>
+          <p><a href={{info["low_item"]}} class="card-link link" target="_blank" rel="noopener noreferrer">Go to
+              Cheapest <i data-feather="shopping-bag"></i></a>
+          </p>
+          <p><a href={{info["high_item"]}} class="card-link link" target="_blank" rel="noopener noreferrer">Go to
+              Expensive <i data-feather="shopping-bag"></i>
+            </a></p>
+          <p><a href={{info["min_rev_item"]}} class="card-link link" target="_blank" rel="noopener noreferrer">Go to
+              least Liked <i data-feather="shopping-bag"></i>
+            </a></p>
+          <p><a href={{info["max_rev_item"]}} class="card-link link" target="_blank" rel="noopener noreferrer">Go to
+              Most Liked <i data-feather="shopping-bag"></i></a>
+          </p>
         </div>
       </div>
+
+    </div>
+
+
+    <!-- QUERY FORM         -->
+    <div class="query-form mb-3">
+      <form class="form-inline" action="/result" method="POST">
+        {{ form.csrf_token }}
+        <div class="form-floating">
+          <select name="param" class="form-select" id="param" aria-label="Floating label select example">
+            <option selected>--</option>
+            <option value="price">Price</option>
+            <option value="rating">Rating</option>
+            <option value="reviews">Reviews</option>
+          </select>
+          <label for="param">Parameter</label>
+        </div>
+        <div class="form-floating">
+          <select name="operator" class="form-select" id="operator" aria-label="Floating label select example">
+            <option selected>--</option>
+            <option value="==">Equals (=)</option>
+            <option value=">=">At Least (&ge;)</option>
+            <option value="<=">At Most (&le;)</option>
+          </select>
+          <label for="operator">Operator</label>
+        </div>
+
+        <div class="form-floating">
+          <input name="value" type="number" min="1" class="form-control" id="price" placeholder="scrape">
+          <label for="price">Value</label>
+        </div>
+
+        <button type="submit" class="btn btn-secondary">
+          Filter
+        </button>
+        <button type="submit" class="btn btn-secondary">
+          Reload
+        </button>
+      </form>
+      <!-- END QUERY FORM             -->
+      {% if info["param"] and info["op"] and info["value"] %}
+      <p class="text-center text-primary my-3">Showing Products for {{info["param"]}} {{info["op"]}} {{info["value"]}}
+      </p>
+      {% else %}
+      <p class="text-center text-primary my-3">Showing All Products</p>
+      {% endif %}
+
+    </div>
+    <!-- QUERY LIST -->
+    <div class="table-area">
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price <br> ({{info["currency"]}})</th>
+            <th><i data-feather="star" color="yellow" stroke-width="3" width="20"></i></th>
+            <th>Total <br> Reviews</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tuple in df %}
+          <tr>
+            <td>
+              {% if tuple.Name|length > 120 %}
+              {{tuple.Name[:120]+"..."}}
+              {% else %}
+              {{tuple.Name}}
+              {% endif %}
+            </td>
+            <td>{{tuple.Price}}</td>
+            <td>{{tuple.Rating}}</td>
+            <td>{{tuple.Reviews}}</td>
+            <td><a href={{tuple.Link}} target="_blank" rel="noopener noreferrer">View</a></td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
     </div>
   </div>
-  {% else %}
-  <!-- NO DATA -->
-  <div class="no-data text-center mt-5">
-    <h2 class="no-data-texth">(>_<)</h2>
-    <p class="no-data-text">NO DATA</p>
-  </div>
-  {% endif %}
+</div>
+</div>
+{% else %}
+<!-- NO DATA -->
+<div class="no-data text-center mt-5">
+  <h2 class="no-data-texth">(>_<) /h2>
+      <p class="no-data-text">NO DATA</p>
+      <p class="no-data-text">{{ error_msg}}</p>
+</div>
+{% endif %}
 </div>
 <script>
-  // if (document.getElementsByTagName("table")) {
-  //   let table = document.getElementsByTagName("table");
-  // }
+
 </script>
 {% endblock %}

@@ -1,8 +1,10 @@
 .vscode
 *.csv
+*.png
 /*.html
 *.log
 /static/offline
 /templates/offbase.html
 test.py
 .idea
+./test

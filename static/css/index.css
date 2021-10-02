@@ -1,67 +1,7 @@
 :root {
   --sk-size: 150px;
 }
-.spinner {
-  width: var(--sk-size);
-  height: var(--sk-size);
-  left: -50%;
-  position: relative;
-  margin: 100px auto;
-}
 
-.double-bounce1 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #fc5185;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  -webkit-animation: sk-bounce 2s infinite ease-in-out;
-  animation: sk-bounce 2s infinite ease-in-out;
-}
-.double-bounce2 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #574b90;
-  opacity: 0.5;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  -webkit-animation: sk-bounce 2s infinite ease-in-out;
-  animation: sk-bounce 2s infinite ease-in-out;
-}
-
-.double-bounce2 {
-  -webkit-animation-delay: -1s;
-  animation-delay: -1s;
-}
-
-@-webkit-keyframes sk-bounce {
-  0%,
-  100% {
-    -webkit-transform: scale(0);
-  }
-  50% {
-    -webkit-transform: scale(1);
-  }
-}
-
-@keyframes sk-bounce {
-  0%,
-  100% {
-    transform: scale(0);
-    -webkit-transform: scale(0);
-  }
-  50% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-}
 .alert-area {
   width: 50%;
   margin: auto;
@@ -79,71 +19,63 @@
 }
 .loading-text {
   font-size: 1.7rem;
-  font-weight: 500;
-  color: #cccccc;
+  font-weight: 600;
+  color: #dfdfdf;
 }
 .loading-subtext {
-  font-size: 1rem;
-  color: #d1d1d1;
+  font-size: 1.2rem;
+  color: #cecece;
 }
 .spinner-area {
   position: absolute;
   top: 20px;
   left: 50%;
 }
-.content {
-  position: relative;
-  top: 50px;
-  padding: 50px 60px 10px;
-  width: 600px;
-  /* height: 460px; */
-  border-radius: 8px;
-  background-color: white;
+
+.form-card {
+  width: min(600px, 100%);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+  font-size: 1.1rem;
 }
-.intro {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  position: relative;
-  padding-bottom: 20px;
-  font-size: 32px;
+
+.header {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 900;
 }
-label {
-  font-weight: 500;
+
+.settings {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 50% 30%;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .butt {
+  border-radius: var(--border-radius);
   margin: auto;
-  width: 150px;
-  height: 60px;
-  border-radius: 2px;
+  padding: 1rem 1.5rem;
+  width: 10rem;
   background-color: #039be7;
   border: 0;
-  font-size: 22px;
-  letter-spacing: 2px;
   color: white;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 200ms ease-in;
 }
 .butt:hover {
   color: #039be7;
   background-color: #c6ecff;
-  border: 3px solid #039be7;
-}
-.form-control:focus,
-.custom-select:focus {
-  border-color: #24292e;
-  box-shadow: 0 0 0 0.2rem#b8b8b8;
-}
-.invalid-label {
-  font-family: "Segoe UI", sans-serif;
-  font-weight: 400;
-  font-size: 80%;
-  margin: 0;
-  padding: 0;
+  outline: 3px solid #039be7;
 }
 
 .body {
+  display: grid;
+  place-items: center;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(
     -45deg,
     #373f51,
@@ -223,5 +155,66 @@ label {
 
   100% {
     background-position: 0% 50%;
+  }
+}
+.spinner {
+  width: var(--sk-size);
+  height: var(--sk-size);
+  left: -50%;
+  position: relative;
+  margin: 100px auto;
+}
+
+.double-bounce1 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #fc5185;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+.double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #574b90;
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bounce {
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
   }
 }

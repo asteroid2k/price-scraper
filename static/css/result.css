@@ -1,40 +1,121 @@
-.my-custom-scrollbar {
-  position: relative;
-  height: 400px;
-  overflow: auto;
+.result {
+  margin: 4rem auto;
+  padding: 1rem;
 }
-.table-wrapper-scroll-y {
-  display: block;
+.data {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  gap: 3rem;
+  justify-content: center;
+}
+.card {
+  width: min(25rem, 90%);
+  transform: translateY(0);
+  border-radius: var(--border-radius);
+  transition: transform 200ms;
+}
+.card:hover {
+  transform: translateY(-0.1rem);
+  box-shadow: var(--box-shadow);
+}
+.card-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+.card-subtitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+.card-body {
+  padding: 1rem;
 }
 
+.card .card-body p span {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.query-form form {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  gap: 1rem;
+}
+.query-form button {
+  width: 8rem;
+}
+.form-floating {
+  max-width: 15rem;
+}
+.content-table {
+  border-collapse: collapse;
+  margin: 1rem auto;
+  font-size: 0.9rem;
+  width: min(400px, 80%);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  display: block;
+}
+tbody,
+thead tr,
+thead {
+  display: block;
+}
+.content-table tbody {
+  height: 400px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+tbody td,
+thead th {
+  width: 100%;
+}
+
+.content-table thead tr {
+  background-color: var(--dark);
+  color: #fff;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.content-table th {
+  padding: 0.3rem 1rem;
+}
+.content-table td {
+  padding: 0.3rem 1.1rem;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #9292928f;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #e0e0e0;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 3px solid var(--dark);
+}
 .no-data-texth {
   font-size: 10rem;
 }
 .no-data-text {
   font-size: 1.5rem;
 }
-.form-control:focus,
-.custom-select:focus {
-  border-color: #24292e;
-  box-shadow: 0 0 0 0.2rem#b8b8b8;
-}
 
-label {
-  font-weight: 500;
-}
-.table thead {
-  background-color: #24292e;
-  color: white;
-}
-.invalid-label {
-  font-family: "Segoe UI", sans-serif;
-  font-weight: 400;
-  font-size: 75%;
-  margin: 0;
-  padding: 5px;
-}
 .alert-area {
   width: 50%;
   margin: auto;
   position: relative;
+}
+
+@media screen and (max-width: 767.98px) {
+  .query-form form {
+    grid-auto-flow: row;
+    gap: 0.2rem;
+  }
 }

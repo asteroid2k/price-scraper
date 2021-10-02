@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, session
 from forms import ScrapeForm, DataframeForm
 import driver
 import os
@@ -13,9 +13,6 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 # Global variables
 sites = ["Jumia", "Kikuu"]
-alert_classes = {"error": "danger_exclamation-octagon",
-                 "warning": "warning_exclamation-octagon", "success": "success_patch-check-fll"}
-table_classes = ["table", "table-striped", "table-hover", "table-sm"]
 
 # Custom Filters
 
@@ -43,7 +40,7 @@ def index():
 
         # render hompage with errors if any
         if err:
-            flash(errmsg, alert_classes["error"])
+            print(f"ERROR: {errmsg}")
             return render_template("index.html", sites=sites, form=form)
 
         state = {"site": request.form["site"], "item": request.form["item"]}
@@ -51,6 +48,7 @@ def index():
         session["info"] = state
         # redirect to results page if no errors occur
         return redirect(url_for("result"))
+
     # GET method return homepage
 
     return render_template("index.html", sites=sites, form=form)
@@ -60,7 +58,6 @@ def index():
 
 @app.route("/result", methods=["GET", "POST"])
 def result():
-
     form = DataframeForm()
     err, err_msg = True, ""
     dataframe = {}
@@ -72,28 +69,22 @@ def result():
     else:
         err_msg = "No Data"
 
-
-# POST method
+    # POST method
     if form.validate_on_submit():
-        print("YAAAY")
-        # flash("YAAAY", alert_classes["success"])
         err, err_msg, dataframe, info = driver.filter_results(
-            filename="dummydata.csv", qfilter=request.form["operator"], value=request.form["value"], info=info)
-        dataframe = dataframe.to_html(
-            classes=table_classes, border=0, render_links=True, max_rows=20, index=False)
-        return render_template("result.html", error=err, error_msg=err_msg, info=info, form=form, df=dataframe)
+            filename=info["filename"], qfilter=request.form["operator"], value=request.form["value"], param=request.form["param"], info=info)
+        if err:
+            print(f"ERROR:{err_msg}")
+        return render_template("result.html", error=err, error_msg=err_msg, info=info, form=form, df=dataframe.itertuples())
 # GET method
-    print("YAAY2")
-    info["item"] = "dummy"
-    info["site"] = "jumia"
-    info["filename"] = "dasdsajdsadksajdlksadlksadslak"
     err, err_msg, dataframe, info = driver.filter_results(
-        filename="dummydata.csv", qfilter="", value="", info=info)
-    dataframe = dataframe.to_html(
-        classes=table_classes, border=0, render_links=True, justify="center", max_rows=20)
-    return render_template("result.html", error=err, error_msg=err_msg, info=info, form=form, df=dataframe)
+        filename=info["filename"], qfilter="", value="", param="", info=info)
+    if err:
+        print(f"ERROR:{err_msg}")
+    return render_template("result.html", error=err, error_msg=err_msg, info=info, form=form, df=dataframe.itertuples())
 
 
 if __name__ == "__main__":
-
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(debug=True)
